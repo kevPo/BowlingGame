@@ -32,10 +32,23 @@ namespace BowlingGame.Tests
             Assert.That(game.GetScore(), Is.EqualTo(20));
         }
 
+        [Test]
+        public void TestOneSpare()
+        {
+            game.Roll(5);
+            game.Roll(5);
+            game.Roll(3);
+            RollMany(17, 0);
+
+            Assert.That(game.GetScore(), Is.EqualTo(16));
+        }
+
         private void RollMany(int rolls, int pins)
         {
             for (var i = 0; i < rolls; i++)
                 game.Roll(pins);
         }
+
+
     }
 }
