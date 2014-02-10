@@ -54,12 +54,17 @@ namespace BowlingGame.Tests
             Assert.That(game.GetScore(), Is.EqualTo(24));
         }
 
+        [Test]
+        public void PerfectGame()
+        {
+            RollMany(12, 10);
+            Assert.That(game.GetScore(), Is.EqualTo(300));
+        }
+
         private void RollMany(int rolls, int pins)
         {
             for (var i = 0; i < rolls; i++)
                 game.Roll(pins);
         }
-
-
     }
 }

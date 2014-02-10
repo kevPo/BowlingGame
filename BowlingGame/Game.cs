@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BowlingGame
 {
     public class Game
     {
-        public int Score { get; set; }
         private List<Int32> Rolls;
 
         public Game()
@@ -24,43 +20,53 @@ namespace BowlingGame
         public Int32 GetScore()
         {
             var score = 0;
-            for (var rollIndex = 0; rollIndex < Rolls.Count;)
+            var rollIndex = 0;
+            for (var frame = 0; frame < 10; frame++)
             {
-                if (IsStrike(Rolls[rollIndex]))
+                var strike = false;
+
+                if (IsStrike(rollIndex))
                 {
-                    score += GetFrameScore(rollIndex) + (Rolls[rollIndex + 2]);
-                    rollIndex++;
+                    score += CalculateStrikeScore(rollIndex);
+                    strike = true;
                 }
+                else if (IsSpare(rollIndex))
+                    score += CalculateSpareScore(rollIndex);
                 else
-                {
-                    var frameScore = GetFrameScore(rollIndex);
+                    score += CalculateNonMarkingScore(rollIndex);
 
-                    if (IsSpare(frameScore))
-                        score += frameScore + Rolls[rollIndex + 2];
-                    else
-                        score += frameScore;
-
-                    rollIndex+=2;
-                }
+                if (strike)
+                    rollIndex++;
+                else
+                    rollIndex += 2;
             }
 
             return score;
         }
 
-        private int GetFrameScore(int rollIndex)
+        private bool IsStrike(Int32 rollIndex)
         {
-            return Rolls[rollIndex] + (Rolls[rollIndex + 1]);
+            return Rolls[rollIndex] == 10;
         }
 
-        private bool IsStrike(Int32 roll)
+        private int CalculateStrikeScore(Int32 rollIndex)
         {
-            return roll == 10;
+            return 10 + Rolls[rollIndex + 1] + Rolls[rollIndex + 2];
         }
 
-        private bool IsSpare(Int32 frameScore)
+        private bool IsSpare(Int32 rollIndex)
         {
-            return frameScore == 10;
+            return Rolls[rollIndex] + Rolls[rollIndex + 1] == 10;
+        }
+        
+        private int CalculateSpareScore(Int32 rollIndex)
+        {
+            return 10 + Rolls[rollIndex + 2];
         }
 
+        private int CalculateNonMarkingScore(Int32 rollIndex)
+        {
+            return Rolls[rollIndex] + Rolls[rollIndex + 1];
+        }
     }
 }
