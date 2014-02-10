@@ -43,6 +43,17 @@ namespace BowlingGame.Tests
             Assert.That(game.GetScore(), Is.EqualTo(16));
         }
 
+        [Test]
+        public void TestOneStrike()
+        {
+            game.Roll(10);
+            game.Roll(3);
+            game.Roll(4);
+            RollMany(16, 0);
+
+            Assert.That(game.GetScore(), Is.EqualTo(24));
+        }
+
         private void RollMany(int rolls, int pins)
         {
             for (var i = 0; i < rolls; i++)

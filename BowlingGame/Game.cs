@@ -9,39 +9,55 @@ namespace BowlingGame
     public class Game
     {
         public int Score { get; set; }
-        public int CurrentRoll { get; set; }
-        private List<int> Rolls;
+        private List<Int32> Rolls;
 
         public Game()
         {
-            Rolls = new List<int>();
+            Rolls = new List<Int32>();
         }
 
-        public void Roll(int pins)
+        public void Roll(Int32 pins)
         {
             Rolls.Add(pins);
         }
 
-        public int GetScore()
+        public Int32 GetScore()
         {
             var score = 0;
-            for (var roll = 0; roll < Rolls.Count; roll +=2)
+            for (var rollIndex = 0; rollIndex < Rolls.Count;)
             {
-                var frameScore = Rolls[roll] + (Rolls[roll+1]);
-                if (IsSpare(frameScore))
+                if (IsStrike(Rolls[rollIndex]))
                 {
-                    score += frameScore + Rolls[roll + 2];
+                    score += GetFrameScore(rollIndex) + (Rolls[rollIndex + 2]);
+                    rollIndex++;
                 }
                 else
                 {
-                    score += frameScore;
-                }
+                    var frameScore = GetFrameScore(rollIndex);
 
+                    if (IsSpare(frameScore))
+                        score += frameScore + Rolls[rollIndex + 2];
+                    else
+                        score += frameScore;
+
+                    rollIndex+=2;
+                }
             }
+
             return score;
         }
 
-        private bool IsSpare(int frameScore)
+        private int GetFrameScore(int rollIndex)
+        {
+            return Rolls[rollIndex] + (Rolls[rollIndex + 1]);
+        }
+
+        private bool IsStrike(Int32 roll)
+        {
+            return roll == 10;
+        }
+
+        private bool IsSpare(Int32 frameScore)
         {
             return frameScore == 10;
         }
