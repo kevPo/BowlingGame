@@ -31,9 +31,13 @@ namespace BowlingGame
                     strike = true;
                 }
                 else if (IsSpare(rollIndex))
+                {
                     score += CalculateSpareScore(rollIndex);
+                }
                 else
+                {
                     score += CalculateNonMarkingScore(rollIndex);
+                }
 
                 if (strike)
                     rollIndex++;
@@ -44,27 +48,27 @@ namespace BowlingGame
             return score;
         }
 
-        private bool IsStrike(Int32 rollIndex)
+        private Boolean IsStrike(Int32 rollIndex)
         {
             return Rolls[rollIndex] == 10;
         }
 
-        private int CalculateStrikeScore(Int32 rollIndex)
+        private Int32 CalculateStrikeScore(Int32 rollIndex)
         {
             return 10 + Rolls[rollIndex + 1] + Rolls[rollIndex + 2];
         }
 
-        private bool IsSpare(Int32 rollIndex)
+        private Boolean IsSpare(Int32 rollIndex)
         {
             return Rolls[rollIndex] + Rolls[rollIndex + 1] == 10;
         }
         
-        private int CalculateSpareScore(Int32 rollIndex)
+        private Int32 CalculateSpareScore(Int32 rollIndex)
         {
             return 10 + Rolls[rollIndex + 2];
         }
 
-        private int CalculateNonMarkingScore(Int32 rollIndex)
+        private Int32 CalculateNonMarkingScore(Int32 rollIndex)
         {
             return Rolls[rollIndex] + Rolls[rollIndex + 1];
         }
